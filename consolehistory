@@ -1,0 +1,200 @@
+sqlite> CREATE TABLE users (
+   ...>   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   ...>   first_name VARCHAR(64) NOT NULL,
+   ...>   last_name VARCHAR(64) NOT NULL,
+   ...>   email VARCHAR(128) UNIQUE NOT NULL,
+   ...>   created_at DATETIME NOT NULL,
+   ...>   updated_at DATETIME NOT NULL
+   ...> );
+sqlite> INSERT INTO users
+   ...> (first_name, last_name, email, created_at, updated_at)
+   ...> VALUES
+   ...> ('Joshua', 'Teng', 'jedicoder@example.com', DATETIME('now'), DATETIME('now')); 
+sqlite> SELECT * FROM users;
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 01:54:20|2019-02-14 01:54:20
+sqlite> INSERT INTO users
+   ...> (first_name, last_name, email, created_at, updated_at)
+   ...> VALUES 
+   ...> ('Jw','Leong','leongjw@hotmail.com',DATETIME('now'),DATETIME('now'));
+sqlite> SELECT * FROM users;
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 01:54:20|2019-02-14 01:54:20
+2|Jw|Leong|leongjw@hotmail.com|2019-02-14 01:57:25|2019-02-14 01:57:25
+sqlite> INSERT INTO users
+   ...> (first_name, last_name, email, created_at, updated_at)
+   ...> VALUES
+   ...> ('Joshua', 'Teng', 'jedicoder@example.com', DATETIME('now'), DATETIME('now')); 
+Error: UNIQUE constraint failed: users.email
+sqlite> SELECT email FROM users;
+jedicoder@example.com
+leongjw@hotmail.com
+sqlite> ALTER TABLE users
+   ...> ADD nickname VARCHAR(64) NOT NULL;
+Error: Cannot add a NOT NULL column with default value NULL
+sqlite> SELECT * FROM users
+   ...> ;
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 01:54:20|2019-02-14 01:54:20
+2|Jw|Leong|leongjw@hotmail.com|2019-02-14 01:57:25|2019-02-14 01:57:25
+sqlite> ALTER TABLE users (
+   ...> ADD nickname VARCHAR(64) NOT NULL);
+Error: near "(": syntax error
+sqlite> SELECT * FROM users
+   ...> ;
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 01:54:20|2019-02-14 01:54:20
+2|Jw|Leong|leongjw@hotmail.com|2019-02-14 01:57:25|2019-02-14 01:57:25
+sqlite> .schema
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
+  email VARCHAR(128) UNIQUE NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+);
+CREATE TABLE sqlite_sequence(name,seq);
+sqlite> ALTER TABLE users
+   ...> ADD nickname VARCHAR(64);
+sqlite> .schema
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
+  email VARCHAR(128) UNIQUE NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+, nickname VARCHAR(64));
+CREATE TABLE sqlite_sequence(name,seq);
+sqlite> ALTER TABLE users
+   ...> MODIFY nickname VARCHAR(64) NOT NULL;
+Error: near "MODIFY": syntax error
+sqlite> .shema
+Error: unknown command or invalid arguments:  "shema". Enter ".help" for help
+sqlite> .schema
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
+  email VARCHAR(128) UNIQUE NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+, nickname VARCHAR(64));
+CREATE TABLE sqlite_sequence(name,seq);
+sqlite> ALTER TABLE users
+   ...> ALTER COLUMN nickname VARCHAR(64) NOT NULL;
+Error: near "ALTER": syntax error
+sqlite> ALTER TABLE users
+   ...> MODIFY COLUMN nickname VARCHAR(64) NOT NULL;
+Error: near "MODIFY": syntax error
+sqlite> .quit
+LeongJinqWens-MacBook-Pro:~ jwleong$ sqlite3 dummy.db
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> CREATE TABLE users (
+   ...>   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   ...>   first_name VARCHAR(64) NOT NULL,
+   ...>   last_name VARCHAR(64) NOT NULL,
+   ...>   email VARCHAR(128) UNIQUE NOT NULL,
+   ...>   created_at DATETIME NOT NULL,
+   ...>   updated_at DATETIME NOT NULL
+   ...> );
+sqlite> INSERT INTO users
+   ...> (first_name, last_name, email, created_at, updated_at)
+   ...> VALUES
+   ...> ('Joshua', 'Teng', 'jedicoder@example.com', DATETIME('now'), DATETIME('now')); 
+sqlite> INSERT INTO users
+   ...> (first_name, last_name, email, created_at, updated_at)
+   ...> VALUES
+   ...> ('Jw', 'Leong', 'jwleong@example.com', DATETIME('now'), DATETIME('now')); 
+sqlite> ALTER TABLE users
+   ...> ADD COLUMN nickname VARCHAR(64) NOT NULL;
+Error: Cannot add a NOT NULL column with default value NULL
+sqlite> ALTER TABLE users
+   ...> 
+   ...> ADD COLUMN nickname VARCHAR(64) NOT NULL;
+Error: Cannot add a NOT NULL column with default value NULL
+sqlite> ADD COLUMN nickname VARCHAR(64) NOT NULL DEFAULT '';;
+Error: near "ADD": syntax error
+sqlite> ALTER TABLE users
+   ...> ADD COLUMN nickname VARCHAR(64) NOT NULL DEFAULT '';
+sqlite> select * from users
+   ...> ;
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 02:44:21|2019-02-14 02:44:21|
+2|Jw|Leong|jwleong@example.com|2019-02-14 02:44:57|2019-02-14 02:44:57|
+sqlite> .header on
+sqlite> select * from users;
+id|first_name|last_name|email|created_at|updated_at|nickname
+1|Joshua|Teng|jedicoder@example.com|2019-02-14 02:44:21|2019-02-14 02:44:21|
+2|Jw|Leong|jwleong@example.com|2019-02-14 02:44:57|2019-02-14 02:44:57|
+sqlite> mode column
+   ...> ;
+Error: near "mode": syntax error
+sqlite> .mode column
+sqlite> select * from users;
+id          first_name  last_name   email                  created_at           updated_at           nickname  
+----------  ----------  ----------  ---------------------  -------------------  -------------------  ----------
+1           Joshua      Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 02:44:21            
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 02:44:57            
+sqlite> .timer on
+sqlite> select * from users;
+id          first_name  last_name   email                  created_at           updated_at           nickname  
+----------  ----------  ----------  ---------------------  -------------------  -------------------  ----------
+1           Joshua      Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 02:44:21            
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 02:44:57            
+Run Time: real 0.000 user 0.000126 sys 0.000051
+sqlite> select id, nickname from users;
+id          nickname  
+----------  ----------
+1                     
+2                     
+Run Time: real 0.000 user 0.000108 sys 0.000063
+sqlite> select id, nickname,email from users;
+id          nickname    email                
+----------  ----------  ---------------------
+1                       jedicoder@example.com
+2                       jwleong@example.com  
+Run Time: real 0.001 user 0.000119 sys 0.000058
+sqlite> select id from users;
+id        
+----------
+1         
+2         
+Run Time: real 0.000 user 0.000104 sys 0.000064
+sqlite> . timer off
+sqlite> select id from users;
+id        
+----------
+1         
+2         
+sqlite> UPDATE users
+   ...> set nickname='pookie butt'
+   ...> where id=1;
+sqlite> select * from users
+   ...> ;
+id          first_name  last_name   email                  created_at           updated_at           nickname   
+----------  ----------  ----------  ---------------------  -------------------  -------------------  -----------
+1           Joshua      Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 02:44:21  pookie butt
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 02:44:57             
+sqlite> update users
+   ...> set nickname='slow'
+   ...> where id=2;
+sqlite> select * from users;
+id          first_name  last_name   email                  created_at           updated_at           nickname   
+----------  ----------  ----------  ---------------------  -------------------  -------------------  -----------
+1           Joshua      Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 02:44:21  pookie butt
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 02:44:57  slow       
+sqlite> update users set first_name='Josh',nickname='Ninja Coder' where id=1;
+sqlite> select * from users
+   ...> ;
+id          first_name  last_name   email                  created_at           updated_at           nickname   
+----------  ----------  ----------  ---------------------  -------------------  -------------------  -----------
+1           Josh        Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 02:44:21  Ninja Coder
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 02:44:57  slow       
+sqlite> update users set updated_at=DATETIME('now') where id in (1,2);
+sqlite> select * from users
+   ...> :
+   ...> ;
+Error: unrecognized token: ":"
+sqlite> select * from users;
+id          first_name  last_name   email                  created_at           updated_at           nickname   
+----------  ----------  ----------  ---------------------  -------------------  -------------------  -----------
+1           Josh        Teng        jedicoder@example.com  2019-02-14 02:44:21  2019-02-14 03:13:46  Ninja Coder
+2           Jw          Leong       jwleong@example.com    2019-02-14 02:44:57  2019-02-14 03:13:46  slow       
