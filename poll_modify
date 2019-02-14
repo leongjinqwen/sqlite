@@ -1,0 +1,45 @@
+select name,location from congress_members where location='TX';
+select name,location from congress_members where location='TX' order by name;
+insert into voters
+(first_name,last_name,gender,party,party_duration,age,married,children_count,homeowner,employed,created_at,updated_at)
+values('john','smith','male','democrat',29,25,1,0,0,0,DATETIME('now'), DATETIME('now'));
+insert into voters
+(first_name,last_name,gender,party,party_duration,age,married,children_count,homeowner,employed,created_at,updated_at)
+values('jane','doe','female','democrat',10,30,1,0,1,0,DATETIME('now'), DATETIME('now'));
+select * from voters where first_name='jane' AND first_name='john';
+select * from voters where first_name in('jane','john');
+insert into votes
+(voter_id,politician_id,created_at,updated_at)
+values(5001,499,DATETIME('now'), DATETIME('now'));
+insert into votes
+(voter_id,politician_id,created_at,updated_at)
+values(5002,145,DATETIME('now'), DATETIME('now'));
+insert into congress_members
+(name,party,location,grade_1996,grade_current,years_in_congress,dw1_score,created_at,updated_at)
+values('Donald Trump','D','NJ',12.64435047,11.76713716,1,-0.391,DATETIME('now'), DATETIME('now'));
+select * from congress_members where name='Donald Trump';
+delete from congress_members where name='Donald Trump';
+select * from congress_members where name='Donald Trump';
+update congress_members set name='Donald Trump' where id=463;
+select * from congress_members where name='Donald Trump';
+update congress_members set name='Sen. Robert Menendez' where id=463;
+select * from congress_members where name='Donald Trump';
+insert into congress_members
+(name,party,location,grade_1996,grade_current,years_in_congress,dw1_score,created_at,updated_at)
+values('Donald Trump','D','NJ',12.64435047,11.76713716,1,-0.391,DATETIME('now'), DATETIME('now'));
+select * from congress_members where name='Donald Trump';
+update votes set politician_id=532 where politician_id=463;
+select * from votes where politician_id=532;
+delete from congress_members where id=463;
+select * from congress_members where id in (463,532);
+select count(*) from voters;
+select count(*) from (select voters.id,count(*) as num_votes from voters join votes on voter_id=voters.id where party not in ('republican','democrat') group by voter_id having num_votes=1);
+delete from voters where voters.id in(select voters.id from (select voters.id,count(*) as num_votes from voters join votes on voter_id=voters.id where party not in ('republican','democrat') group by voter_id having num_votes=1));
+select count(*) from voters
+;
+delete from voters where voters.id in (select voters.id from voters join votes on voter_id=voters.id where party not in ('republican','democrat') group by voters.id having count(*)=1 order by voters.id);
+delete from voters where voters.id in (select distinct voters.id from ((voters inner join votes on voter_id=voters.id) inner join congress_members on politician_id=congress_members.id) where homeowner=1 and employed=1 and children_count=0 and party_duration<3 and grade_current>12 order by voters.id);
+update votes set politician_id=346 where voter_id in (select voters.id from voters where gender='male' and age>80 and children_count=0 order by voters.id);
+select congress_members.id from congress_members order by grade_1996 desc limit 1;
+select congress_members.id from congress_members order by grade_1996 asc limit 1;
+update votes set politician_id=1 where politician_id=530;
